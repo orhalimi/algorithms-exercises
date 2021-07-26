@@ -10,10 +10,12 @@
  */
 
 function nestedAdd(array) {
-  // write code here
+  return array.reduce((accumulator=0, current) => {
+    return Array.isArray(current)? accumulator + nestedAdd(current): accumulator + current
+  }, 0)
 }
 
-test.skip("nested arrays addition", () => {
+test("nested arrays addition", () => {
   expect(nestedAdd([1, 2, 3])).toEqual(6);
   expect(nestedAdd([1, [2], 3])).toEqual(6);
   expect(nestedAdd([[[[[[[[[5]]]]]]]]])).toEqual(5);
