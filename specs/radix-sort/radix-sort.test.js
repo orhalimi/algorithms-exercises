@@ -9,13 +9,49 @@
 
 */
 
+function getDigit(number, place){
+  const string = number.toString();
+  const size = string.length;
+  return place > size? 0: Number(string[size - place ])
+}
+
+function getLongestNumber(arr){
+  let longest = 0;
+  for (let n of arr) {
+    const currentLength = n.toString().length;
+    longest = currentLength > longest ? currentLength : longest;
+  }
+  return longest;
+}
+
+function createBucket(){
+  return new Array(10).fill().map(() => []); 
+}
+
 function radixSort(array) {
-  // code goes here
+  const longest = getLongestNumber(array);
+  let arr = [...array];
+
+  for(let i = 1; i <= longest; i ++){
+    buckets = createBucket();
+    for(let n of arr){
+      const pos = getDigit(n, i);
+      buckets[pos].push(n)
+    }
+    console.log("bucket")
+    console.log(buckets)
+
+    arr = buckets.flat(1);
+    console.log("arr")
+    console.log(arr)
+  }
+
+  return arr;
 }
 
 // unit tests
 // do not modify the below code
-describe.skip("radix sort", function () {
+describe("radix sort", function () {
   it("should sort correctly", () => {
     const nums = [
       20,
@@ -71,6 +107,6 @@ describe.skip("radix sort", function () {
       .fill()
       .map(() => Math.floor(Math.random() * 500000));
     const ans = radixSort(nums);
-    expect(ans).toEqual(nums.sort());
+    expect(ans).toEqual(nums.sort((a,b) => a -b));
   });
 });
