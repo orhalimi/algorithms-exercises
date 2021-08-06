@@ -11,7 +11,7 @@ function binarySearch(id, array) {
   let min = 0; 
   let max = array.length -1;
 
-  while(min < max){
+  while(min <= max){
     const index = Math.floor((min + max) /2);
     let element = array[index];
 
