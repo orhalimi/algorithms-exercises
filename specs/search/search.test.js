@@ -8,11 +8,22 @@ function linearSearch(id, array) {
 }
 
 function binarySearch(id, array) {
-  // code goes here
+  let min = 0; 
+  let max = array.length -1;
+
+  while(min < max){
+    const index = Math.floor((min + max) /2);
+    let element = array[index];
+
+    if(element.id > id) max = index - 1;
+    else if (element.id < id) min = index + 1;
+    else return array[index];
+  }
+
 }
 
 // unit tests
-// do not modify the below code
+// do not modify the bemin code
 test.skip("linear search", function () {
   const lookingFor = { id: 5, name: "Brian" };
   expect(
@@ -35,7 +46,7 @@ test.skip("linear search", function () {
   ).toBe(lookingFor);
 });
 
-test.skip("binary search", function () {
+test("binary search", function () {
   const lookingFor = { id: 23, name: "Brian" };
   expect(
     binarySearch(23, [
@@ -52,7 +63,8 @@ test.skip("binary search", function () {
       { id: 19, name: "Marc" },
       { id: 21, name: "Chris" },
       lookingFor,
-      { id: 24, name: "Ben" }
+      { id: 24, name: "Ben" },
+      { id: 25, name: "Ben2" },
     ])
   ).toBe(lookingFor);
 });
