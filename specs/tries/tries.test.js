@@ -13,17 +13,64 @@ const { CITY_NAMES } = require("./cities.js");
 const _ = require("lodash"); // needed for unit tests
 
 class Node {
-  // you don't have to use this data structure, this is just how I did it
-  // you'll almost definitely need more methods than this and a constructor
-  // and instance variables
+  constructor(string) {
+    this.childern = [];
+    this.terminus = false;
+    this.value = string[0]
+    if (string.length > 1) {
+      this.childern.push(new Node(string.substring(1)))
+    }
+    else {
+      this.terminus = true;
+    }
+  }
+  
+  add(string){
+    const value = string[0];
+    const next = string.substring(1);
+    for(let child of this.childern){
+      if(child.value === value){
+        if(next) {child.add(next)}
+        else {child.terminus = true}
+        return;
+      }
+    }
+
+    this.childern.push(new Node(string))
+  }
+
+  _complete(search, built, suggestions){
+    if(suggestions.length >=3 || search && search[0] !== this.value){
+      return suggestions;
+    }
+
+    if (this.terminus){
+      suggestions.push(`${built}${this.value}`)
+    }
+    
+    for(let child of this.childern){
+      suggestions = child._complete(search.substring(1), built + this.value, suggestions);
+    
+    }
+
+    return suggestions;
+  }
+
   complete(string) {
-    return [];
+    let completions = [];
+    for(let child of this.childern){
+      completions = completions.concat(child._complete(string, "", []))
+    }
+    return completions;
   }
 }
 
 const createTrie = (words) => {
   // you do not have to do it this way; this is just how I did it
   const root = new Node("");
+  for (word of words) {
+    root.add(word.toLowerCase())
+  }
 
   // more code should go here
 
@@ -32,7 +79,7 @@ const createTrie = (words) => {
 
 // unit tests
 // do not modify the below code
-describe.skip("tries", function () {
+describe("tries", function () {
   test("dataset of 10 – san", () => {
     const root = createTrie(CITY_NAMES.slice(0, 10));
     const completions = root.complete("san");

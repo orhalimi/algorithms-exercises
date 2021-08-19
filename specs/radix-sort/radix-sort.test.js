@@ -38,12 +38,7 @@ function radixSort(array) {
       const pos = getDigit(n, i);
       buckets[pos].push(n)
     }
-    console.log("bucket")
-    console.log(buckets)
-
     arr = buckets.flat(1);
-    console.log("arr")
-    console.log(arr)
   }
 
   return arr;
